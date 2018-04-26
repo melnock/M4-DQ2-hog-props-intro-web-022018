@@ -2,6 +2,16 @@ import React, { Component } from 'react'
 import { Button, Checkbox, Form, Input, Radio, Select, TextArea } from 'semantic-ui-react'
 import Master from '../assets/master-hog.png'
 import BabyHog from '../components/BabyHog'
+import SunBaby from '../assets/sun-eyes.png'
+import BlueBaby from '../assets/blue-eyes.png'
+import GlowingBaby from '../assets/glowing-eyes.png'
+
+
+const imgMapper = {
+  'blue': BlueBaby,
+  'glowing': GlowingBaby,
+  'sun': SunBaby
+}
 
 class MasterHog extends Component {
 
@@ -11,14 +21,23 @@ class MasterHog extends Component {
       eyeColor: "blue",
       name: "Master Blaster",
       weight: '2.54 Tons',
-      offspring: []
+      offspring: [...props.offspring]
     }
   }
 
 
   changeEyeColor(event) {
     event.preventDefault()
+    this.setState({
+      eyeColor: event.target.value,
+    })
+  }
 
+  getOffspring(){
+    const color = this.state.eyeColor
+    return this.state.offspring.map((hog)=>{
+      return <BabyHog name={hog.name} eyeColor={this.state.eyeColor} weight={hog.weight} img={imgMapper[color]} />
+    })
   }
 
 
@@ -55,7 +74,7 @@ class MasterHog extends Component {
           <img id="master-blaster" src={Master} alt='MasterBlaster' style={{height: 400}}></img>
         </div>
         <ul className="hoglist">
-          {/* render hog babies */}
+          {this.getOffspring()}
         </ul>
 
       </div>
